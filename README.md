@@ -1,5 +1,4 @@
-<img src="icons/istio
-.png" />
+<img src="icons/istio.png" />
 
 # Istio
 
@@ -63,8 +62,7 @@ Istio gateway describes a load balancer operating at the edge of the mesh receiv
 
 Istio supports Kubernetes ingress but there is also another approach that Istio offers and recommends in order to have more feature such advanced monitoring and routing rules, this is called Istio Gateway
 
-<img src="icons/istio-gateway
-.png" />
+<img src="icons/istio-gateway.png" />
 
 Istio deploys ingress gateways using Envoy proxies, all the services have an Envoy proxy deployed as a sidecard contianer, however, the ingress and egress gateways are just standalone Envoy proxies, sitting at the edge of the service mesh (the do not work as a sicard).
 
