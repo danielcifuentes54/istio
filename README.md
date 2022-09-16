@@ -54,3 +54,60 @@ Kiali is an observability console for Istio with service mesh configuration and 
 ### [install Kiali](https://kiali.io/docs/installation/quick-start/)
 
 `kubectl apply -f ${ISTIO_HOME}/samples/addons/kiali.yaml`
+
+## Trafic Management
+
+### Istio Gateways
+
+Istio gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections.
+
+Istio supports Kubernetes ingress but there is also another approach that Istio offers and recommends in order to have more feature such advanced monitoring and routing rules, this is called Istio Gateway
+
+<img src="icons/istio-gateway
+.png" />
+
+Istio deploys ingress gateways using Envoy proxies, all the services have an Envoy proxy deployed as a sidecard contianer, however, the ingress and egress gateways are just standalone Envoy proxies, sitting at the edge of the service mesh (the do not work as a sicard).
+
+List the created wateways
+- `kubectl get gateway`
+
+View details of an particular gateway
+- kubectl describe gateway <GATEWAY_NAME>
+  - `kubectl describe gateway my-gateway`
+
+### Virtaul Services
+
+- Virtual services define a set of routing rules for traffic coming from ingress gateway into the service mesh.
+- All routin rules are configured through virtual services 
+- Define a set of routing rules for traffic comming from ingress gateway 
+- VS are flexible and powerfull
+- When a virtual service is created Istio control plane applies the new configuration to all the Envoy sidecar proxies 
+- you can specify many rules, for example:
+  - the routing percent for each service in the virtual service configuration file (ex: `weight: 95`)
+  - send traffic to a specific service according to the user logged in ex:
+    > ```
+    > - headers: 
+    >    end-user: 
+    >      exact: testuser
+    > ```
+
+List the created virtual services
+- `kubectl get virtualservice`
+- `kubectl get vs`
+
+
+### Destination Rules
+
+- Destination rule defines policies that apply to traffic intended for a service after routing has occurred so with a destination rule you can add additional routing policies on top of a kubernetes services.
+
+- The destination rules object creates subsets that are used in the virtual service object
+
+- Allows us to have different load balancer policies such as:
+  - ROUND_ROBIN  (Default)
+  - LEAST_CONN
+  - RANDOM
+  - PASSTHROUGH
+
+List the created destination rules
+- `kubectl get destinationrules`
+- `kubectl get dr`

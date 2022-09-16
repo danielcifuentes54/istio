@@ -1,0 +1,29 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: myapp
+  namespace: default
+spec:
+  gateways:
+  - myapp-gateway
+  hosts:
+  - daniel.cifuentes.com
+  http:
+  - match:
+    - uri:
+        prefix: /myapp
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: myapp
+        subset: v1
+      weight: 80
+    - destination:
+        port:
+          number: 8080
+        host: myapp
+        subset: v2
+      weight: 20
