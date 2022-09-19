@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: httpbin
+spec:
+  hosts:
+  - reviews
+  http:
+  - match:
+    - headers:
+        end-user:
+          exact: daniel-user
+    route:
+      - destination:
+          host: reviews
+          subset: v2
+  - route:
+      - destination:
+          host: reviews
+          subset: v1

@@ -82,16 +82,11 @@ View details of an particular gateway
 - VS are flexible and powerfull.
 - When a virtual service is created Istio control plane applies the new configuration to all the Envoy sidecar proxies.
 - you can specify many rules, for example:
-  - the routing percent for each service in the virtual service configuration file (ex: `weight: 95`).
-  - send traffic to a specific service according to the user logged in ex:
-    > ```
-    > - headers: 
-    >    end-user: 
-    >      exact: testuser
-    > ```
-- Fault Tolerance: Introduce some errors to check if errors hanldling mechanisms are working as expected.
-- Timeouts: if a service is taking to much time to respond it must no keep the dependent service waiting forever, it must fail after a period of time and return an error message.
-- Retries: Attempt the operation again, Istio by default has the following configuration:
+  - the routing percent for each service in the virtual service configuration file [(Example)](03-virtual-service-configurations/01-weight.yaml).
+  - send traffic to a specific service according to the user logged in [(Example)](03-virtual-service-configurations/02-match-header.yaml).
+- Fault Tolerance: Introduce some errors to check if errors hanldling mechanisms are working as expected [(Delay Example)](03-virtual-service-configurations/03-fault-tolerance-delay.yaml) [(Abort Example)](03-virtual-service-configurations/04-fault-tolerance-abort.yaml).
+- Timeouts: if a service is taking to much time to respond it must no keep the dependent service waiting forever, it must fail after a period of time and return an error message [(Example)](03-virtual-service-configurations/05-timeout.yaml).
+- Retries: Attempt the operation again [(Example)](03-virtual-service-configurations/06-retries.yaml), Istio by default has the following configuration:
   - 25 ms+ intervals after 1st fail.
   - 2 retries before returning an error.
 
@@ -108,8 +103,16 @@ List the created virtual services
   - LEAST_CONN
   - RANDOM
   - PASSTHROUGH
-- Circuit breaking: Mark the requests failed immediately instead of send them to the failing service.
+- Circuit breaking: Mark the requests failed immediately instead of send them to the failing service [Example](04-destination-rule-configurations/01-circuit-breaking.yaml).
 
 List the created destination rules
 - `kubectl get destinationrules`
 - `kubectl get dr`
+
+## Security
+
+- Istio security architecture: has security checks in every point not just the entry point to the network and this is called security at depth 
+- Authentication:  In service oriented architecture we need to make sure that communication between services are authenticated, meaning when a service tries to communicate with another service there should be a way to confirm they're really who they say they are (Mutual TLS / JWT validation).
+  - Istio provides a PeerAuthentication object in order to have authentication in an specific worload, namespace-wide or mesh-wide policy [Mesh-Wide Example](05-security/01-peer-authentication.yaml).
+- Authorization: We can control which service can reach which service, Istio provides authorization mechanisms that allow us to define policies to allow or deny requests based on certain criteria [Mesh-Wide Example](05-security/01-peer-authentication.yaml).
+- Certification Management: When a service is started, it needs to identify itself to the mesh control plane and retrieve a certificate in order to serve traffic. Istiod has a built-in certificate authority and creates its own certificates, however, you can use your own certificates.
