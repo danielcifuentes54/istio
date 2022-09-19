@@ -46,14 +46,6 @@ you must  explicity enable Istio Sidecar injection at a namespace level if you w
 
 > you can check the status of the mesh with the following command. `istioctl analyze`
 
-## Kiali
-
-Kiali is an observability console for Istio with service mesh configuration and validation capabilities. It helps you understand the structure and health of your service mesh by monitoring traffic flow to infer the topology and report errors. 
-
-### [install Kiali](https://kiali.io/docs/installation/quick-start/)
-
-`kubectl apply -f ${ISTIO_HOME}/samples/addons/kiali.yaml`
-
 ## Trafic Management
 
 ### Istio Gateways
@@ -116,3 +108,21 @@ List the created destination rules
   - Istio provides a PeerAuthentication object in order to have authentication in an specific worload, namespace-wide or mesh-wide policy [Mesh-Wide Example](05-security/01-peer-authentication.yaml).
 - Authorization: We can control which service can reach which service, Istio provides authorization mechanisms that allow us to define policies to allow or deny requests based on certain criteria [Example](05-security/02-authorization-policy.yaml).
 - Certification Management: When a service is started, it needs to identify itself to the mesh control plane and retrieve a certificate in order to serve traffic. Istiod has a built-in certificate authority and creates its own certificates, however, you can use your own certificates.
+
+## Observability
+
+### Visualizing Metrics (Prometheus and Grafana)
+
+The standard Istio metrics are exported to Prometheus by default, then, as an Istio add-on your metrics can be monitored in grafana.
+
+### Distributed Tracing (Jaeger)
+
+It's a way to monitor individual requests in order to understand behavior of services
+
+### Observability Console (Kiali)
+
+Kiali is an observability console for Istio with service mesh configuration and validation capabilities. It helps you understand the structure and health of your service mesh by monitoring traffic flow to infer the topology and report errors. 
+
+### [install Kiali](https://kiali.io/docs/installation/quick-start/)
+
+`kubectl apply -f ${ISTIO_HOME}/samples/addons/kiali.yaml`
