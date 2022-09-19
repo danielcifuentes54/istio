@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: httpbin
+spec:
+  gateways:
+  - httpbin-gateway
+  hosts:
+  - daniel.cifuentes.com
+  http:
+  - match:
+    - uri:
+        prefix: /status
+    route:
+    - destination:
+        host: httpbin
+        port:
+          number: 8000
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
